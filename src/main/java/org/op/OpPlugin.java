@@ -3,11 +3,6 @@ package org.op;
 import org.rusherhack.client.api.RusherHackAPI;
 import org.rusherhack.client.api.plugin.Plugin;
 
-/**
- * Example rusherhack plugin USED AS BASE
- *
- * @author John200410
- */
 public class OpPlugin extends Plugin {
 	
 	@Override

@@ -4,6 +4,7 @@ import com.google.common.eventbus.Subscribe;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
+import org.rusherhack.client.api.events.client.EventUpdate;
 import org.rusherhack.client.api.events.render.EventRender3D;
 import org.rusherhack.client.api.feature.module.ModuleCategory;
 import org.rusherhack.client.api.feature.module.ToggleableModule;
@@ -21,6 +22,13 @@ public class TrapEsp extends ToggleableModule {
         //register settings
         this.registerSettings(
         );
+    }
+
+    @Subscribe
+    private void onUpdate(EventUpdate event) {
+        BlockPos pos = new BlockPos(mc.player.getBlockX(),mc.player.getBlockY(), mc.player.getBlockZ());
+        Block block = mc.level.getBlockState(pos).getBlock();
+        this.getLogger().info(String.valueOf(pos));
     }
 
     /*@Subscribe
