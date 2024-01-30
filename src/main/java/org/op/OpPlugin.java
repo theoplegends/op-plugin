@@ -18,6 +18,9 @@ public class OpPlugin extends Plugin {
 
 		final AutoPearl autopearl = new AutoPearl();
 		RusherHackAPI.getModuleManager().registerFeature(autopearl);
+
+		final TrapEsp trapesp = new TrapEsp();
+		RusherHackAPI.getModuleManager().registerFeature(trapesp);
 		this.getLogger().info("all modules initialized!");
 	}
 	
