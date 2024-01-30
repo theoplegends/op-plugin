@@ -26,9 +26,8 @@ public class TrapEsp extends ToggleableModule {
 
     @Subscribe
     private void onUpdate(EventUpdate event) {
-        BlockPos pos = new BlockPos(mc.player.getBlockX(),mc.player.getBlockY(), mc.player.getBlockZ());
-        Block block = mc.level.getBlockState(pos).getBlock();
-        this.getLogger().info(String.valueOf(pos));
+        Block block = mc.level.getBlockState(mc.player.blockPosition()).getBlock();
+        this.getLogger().info(String.valueOf(block));
     }
 
     /*@Subscribe
