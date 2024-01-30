@@ -16,6 +16,7 @@ public class OpPlugin extends Plugin {
 
 		final TrapEsp trapesp = new TrapEsp();
 		RusherHackAPI.getModuleManager().registerFeature(trapesp);
+
 		this.getLogger().info("all modules initialized!");
 	}
 	

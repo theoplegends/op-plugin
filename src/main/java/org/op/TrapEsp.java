@@ -3,45 +3,55 @@ package org.op;
 import com.google.common.eventbus.Subscribe;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.state.BlockState;
 import org.rusherhack.client.api.events.client.EventUpdate;
 import org.rusherhack.client.api.events.render.EventRender3D;
 import org.rusherhack.client.api.feature.module.ModuleCategory;
 import org.rusherhack.client.api.feature.module.ToggleableModule;
 import org.rusherhack.client.api.render.IRenderer3D;
+import org.rusherhack.client.api.setting.ColorSetting;
 import org.rusherhack.core.utils.ColorUtils;
-import org.rusherhack.client.api.utils.EntityUtils;
-import net.minecraft.world.level.Level;
+
+import java.awt.*;
 
 public class TrapEsp extends ToggleableModule {
+
+    private final ColorSetting espColor = new ColorSetting("Color", Color.RED)
+            .setAlphaAllowed(false)
+            .setThemeSync(true);
 
     public TrapEsp() {
         super("TrapEsp", "Shows those annoying 1x1 bedrock holes", ModuleCategory.CLIENT);
 
-
-        //register settings
         this.registerSettings(
+            this.espColor
         );
     }
 
+
+    BlockPos playerblock;
+    Block block;
+
     @Subscribe
     private void onUpdate(EventUpdate event) {
-        Block block = mc.level.getBlockState(mc.player.blockPosition()).getBlock();
-        this.getLogger().info(String.valueOf(block));
+        if(mc.player != null) {
+            playerblock = mc.player.blockPosition();
+            //gonna use this later for checking if its air
+            //block = mc.level.getBlockState(playerblock).getBlock();
+        }
     }
 
-    /*@Subscribe
+    @Subscribe
     private void onRenderBox(EventRender3D event) {
         final IRenderer3D renderer = event.getRenderer();
 
-        final int color = ColorUtils.transparency(1, 0.5f);
+        final int color = ColorUtils.transparency(this.espColor.getValueRGB(), 0.5f);
 
         renderer.begin(event.getMatrixStack());
-        //get positions
-        BlockPos pos = null;
 
-        Block block = mc.level.getBlockState(pos).getBlock();
+        if (playerblock != null) {
+            renderer.drawBox(playerblock, true, true, color);
+        }
 
         renderer.end();
-    }*/
+    }
 }

@@ -55,7 +55,6 @@ public class AutoPearl extends ToggleableModule {
             }
             
             final int itemHotbar = InventoryUtils.findItemHotbar(Items.ENDER_PEARL);
-            
             if(itemHotbar != -1) {
                 int oldSlot = -1;
                 
