@@ -14,6 +14,9 @@ public class OpPlugin extends Plugin {
 		final AutoPearl autopearl = new AutoPearl();
 		RusherHackAPI.getModuleManager().registerFeature(autopearl);
 
+		final JakeOrganCrasher jakeorgancrasher = new JakeOrganCrasher();
+		RusherHackAPI.getModuleManager().registerFeature(jakeorgancrasher);
+
 		final TrapEsp trapesp = new TrapEsp();
 		RusherHackAPI.getModuleManager().registerFeature(trapesp);
 

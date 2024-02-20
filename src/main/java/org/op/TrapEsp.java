@@ -20,7 +20,7 @@ public class TrapEsp extends ToggleableModule {
             .setThemeSync(true);
 
     public TrapEsp() {
-        super("TrapEsp", "Shows those annoying 1x1 bedrock holes", ModuleCategory.CLIENT);
+        super("TrapEsp", "Shows those annoying 1x1 bedrock holes(DONT USE BROKEN)", ModuleCategory.CLIENT);
 
         this.registerSettings(
             this.espColor
