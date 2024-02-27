@@ -1,8 +1,10 @@
 package org.op;
 
+import net.minecraft.network.protocol.game.ServerboundPlayerInputPacket;
 import net.minecraft.network.protocol.game.ServerboundSetCarriedItemPacket;
 import net.minecraft.world.item.EnderpearlItem;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.level.gameevent.vibrations.VibrationSystem;
 import org.lwjgl.glfw.GLFW;
 import org.rusherhack.client.api.RusherHackAPI;
 import org.rusherhack.client.api.bind.key.GLFWKey;
@@ -22,71 +24,70 @@ import net.minecraft.network.protocol.game.ServerboundUseItemPacket;
 import net.minecraft.world.InteractionHand;
 import org.rusherhack.core.utils.Timer;
 
-public class AutoPearl extends ToggleableModule {
-    
-    private final BindSetting rotate = new BindSetting("hotkey", NullKey.INSTANCE /* unbound */);
-    private final NumberSetting<Float> rotatePitch = new NumberSetting<>("Pitch", 85f, -90f, 90f).incremental(0.1f);
-    
+
+public class HoleEscape extends ToggleableModule {
+
+    private final NumberSetting<Float> rotatePitch = new NumberSetting<>("Pitch", -90f, -90f, 90f).incremental(0.1f);
+
+    private final NumberSetting<Integer> delay = new NumberSetting<>("Delay(ms)", 1, 0, 1000);
+
     /**
      * Variables
      */
-    private boolean run = false;
-    
-    public AutoPearl() {
-        super("AutoPearl", "Automatically pearl onto block ur facing", ModuleCategory.CLIENT);
-        
+
+    Timer timer = new Timer();
+
+    public HoleEscape() {
+        super("HoleEscape", "Gets you out of 1x1 holes", ModuleCategory.CLIENT);
+
         //subsettings
-        this.rotate.addSubSettings(this.rotatePitch);
-        
+
         //register settings
         this.registerSettings(
-                this.rotate
+                this.delay,
+                this.rotatePitch
         );
     }
-    
-    @Subscribe(priority = -1000 /* priority over other rusherhack modules */)
+
+    @Subscribe
     private void onUpdate(EventUpdate event) {
-        
-        if(this.run) {
+
+        if(timer.passed(this.delay.getValue())){
+
             RusherHackAPI.getRotationManager().updateRotation(mc.player.getYRot(), this.rotatePitch.getValue());
-            
+
             if(RusherHackAPI.getServerState().getPlayerPitch() != this.rotatePitch.getValue()) {
                 return;
             }
-            
+
             final int itemHotbar = InventoryUtils.findItemHotbar(Items.ENDER_PEARL);
             if(itemHotbar != -1) {
                 int oldSlot = -1;
-                
-                if(itemHotbar != mc.player.getInventory().selected) {
+
+
+                //this.getLogger().info("Ticks passed: " + String.valueOf(timer.getTicksPassed()));
+                //this.getLogger().info("Time passed(ms): " + String.valueOf(timer.getTime()));
+                if (itemHotbar != mc.player.getInventory().selected) {
                     oldSlot = mc.player.getInventory().selected;
                     mc.player.connection.send(new ServerboundSetCarriedItemPacket(mc.player.getInventory().selected = itemHotbar));
                 }
-                
+
                 mc.player.connection.send(new ServerboundUseItemPacket(InteractionHand.MAIN_HAND, 1));
-                
-                if(oldSlot != -1) {
+
+                if (oldSlot != -1) {
                     mc.player.connection.send(new ServerboundSetCarriedItemPacket(mc.player.getInventory().selected = oldSlot));
                 }
+                this.toggle();
             }
-            
-            this.run = false;
         }
+
     }
 
-    /*private int getYaw() {
-        return (int) Math.round(mc.player.getXRot(new Vec3d(Math.floor(mc.player.getX()) + 0.5, 0, Math.floor(mc.player.getZ()) + 0.5))) + 180;
-    }*/
-    
-    @Subscribe
-    private void onKeyPress(EventKeyboard event) {
-        if(event.getAction() == GLFW.GLFW_PRESS && this.rotate.getValue() instanceof GLFWKey glfwKey && glfwKey.getKeyCode() == event.getKey()) {
-            this.run = true;
-        }
-    }
-    
+    //by theoplegends, credits to john, asphyxia and some guy from the rusher discord
+
     @Override
     public void onEnable() {
-        this.run = false;
+        timer.reset();
+        mc.player.jumpFromGround();
     }
 }

@@ -17,6 +17,12 @@ public class OpPlugin extends Plugin {
 		final JakeOrganCrasher jakeorgancrasher = new JakeOrganCrasher();
 		RusherHackAPI.getModuleManager().registerFeature(jakeorgancrasher);
 
+		final HoleEscape holeescape = new HoleEscape();
+		RusherHackAPI.getModuleManager().registerFeature(holeescape);
+
+		final PaperCrash papercrash = new PaperCrash();
+		RusherHackAPI.getModuleManager().registerFeature(papercrash);
+
 		final TrapEsp trapesp = new TrapEsp();
 		RusherHackAPI.getModuleManager().registerFeature(trapesp);
 
