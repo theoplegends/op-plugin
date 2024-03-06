@@ -23,7 +23,7 @@ public class JakeOrganCrasher extends ToggleableModule {
      */
 
     public JakeOrganCrasher() {
-        super("JakeOrganCrash", "FUCK JAKEORGAN, grim.crystalpvp.cc ontop", ModuleCategory.CLIENT);
+        super("JakeLag", "FUCK JAKEORGAN, grim.crystalpvp.cc ontop", ModuleCategory.CLIENT);
 
         //subsettings
 
