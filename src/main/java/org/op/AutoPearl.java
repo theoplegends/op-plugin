@@ -74,10 +74,6 @@ public class AutoPearl extends ToggleableModule {
         }
     }
 
-    /*private int getYaw() {
-        return (int) Math.round(mc.player.getXRot(new Vec3d(Math.floor(mc.player.getX()) + 0.5, 0, Math.floor(mc.player.getZ()) + 0.5))) + 180;
-    }*/
-    
     @Subscribe
     private void onKeyPress(EventKeyboard event) {
         if(event.getAction() == GLFW.GLFW_PRESS && this.rotate.getValue() instanceof GLFWKey glfwKey && glfwKey.getKeyCode() == event.getKey()) {
